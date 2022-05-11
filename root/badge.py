@@ -275,31 +275,42 @@ detail2_text = truncatestring(detail2_text, DETAILS_TEXT_SIZE,
 
 draw_badge()
 
+do_update = 0
+
 while True:
     if display.pressed(badger2040.BUTTON_A):
         badger_os.warning(display, "Find me on Twitter @DarkPhyore")
-        time.sleep(4)
+        time.sleep(2)
+        do_update = 1
 
     if display.pressed(badger2040.BUTTON_B):
         badger_os.warning(display, "Find me on Twitch @Phyore")
-        time.sleep(4)
+        time.sleep(2)
+        do_update = 1
 
     if display.pressed(badger2040.BUTTON_C):
         badger_os.warning(display, "Find me on Telegram @Phyore")
-        time.sleep(4)
+        time.sleep(2)
+        do_update = 1
 
     if display.pressed(badger2040.BUTTON_UP):
         if(current_state > 1):
             current_state -= 1
+            do_update = 1
 
     if display.pressed(badger2040.BUTTON_DOWN):
         if(current_state < 2):
             current_state += 1
+            do_update = 1
+    
+    if(do_update):
+        draw_badge()
+        display.update()
+        do_update = 0
 
-    draw_badge()
-
-    display.update()
 
     # If on battery, halt the Badger to save power, it will wake up if any of the front buttons are pressed
     display.halt()
+
+
 
