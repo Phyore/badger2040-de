@@ -11,7 +11,7 @@ IMAGE_WIDTH = 104
 COMPANY_HEIGHT = 30
 DETAILS_HEIGHT = 20
 NAME_HEIGHT = HEIGHT - COMPANY_HEIGHT - (DETAILS_HEIGHT * 2) - 2
-TEXT_WIDTH = WIDTH - IMAGE_WIDTH - 1
+TEXT_WIDTH = WIDTH - IMAGE_WIDTH - 11
 
 COMPANY_TEXT_SIZE = 0.6
 DETAILS_TEXT_SIZE = 0.5
@@ -29,7 +29,8 @@ Phyore"""
 
 BADGE_IMAGE = bytearray(int(IMAGE_WIDTH * HEIGHT / 8))
 
-current_state = 2
+current_state = 1
+total_states = 2
 
 try:
     open("badge-image.bin", "rb").readinto(BADGE_IMAGE)
@@ -61,20 +62,34 @@ def truncatestring(text, text_size, width):
 #      Drawing functions
 # ------------------------------
 
+def draw_badge_menu():
+    # Top Arrow (Side panel) - REDO
+    display.pen(15)
+    display.rectangle(WIDTH - 10, 0, 11, 128) # top arrow
+    #display.line(WIDTH, 1, WIDTH, HEIGHT)
+    display.pen(0)
+    if(current_state >= total_states):
+        display.rectangle(WIDTH - 7, 28, 7, 7) # top arrow
+    if(current_state < total_states):
+        display.rectangle(WIDTH - 7, 90, 7, 7) # top arrow
+
+
 def draw_badge_1():
     display.pen(0)
     display.clear()
+    
+    draw_badge_menu()
 
     # Draw badge image
-    display.image(BADGE_IMAGE, IMAGE_WIDTH, HEIGHT, WIDTH - IMAGE_WIDTH, 0)
+    display.image(BADGE_IMAGE, IMAGE_WIDTH, HEIGHT, WIDTH - IMAGE_WIDTH - 10, 0)
 
     # Draw a border around the image
     display.pen(0)
     display.thickness(1)
-    display.line(WIDTH - IMAGE_WIDTH, 0, WIDTH - 1, 0)
-    display.line(WIDTH - IMAGE_WIDTH, 0, WIDTH - IMAGE_WIDTH, HEIGHT - 1)
-    display.line(WIDTH - IMAGE_WIDTH, HEIGHT - 1, WIDTH - 1, HEIGHT - 1)
-    display.line(WIDTH - 1, 0, WIDTH - 1, HEIGHT - 1)
+    display.line(WIDTH - IMAGE_WIDTH-10, 0, WIDTH - 10, 0)
+    display.line(WIDTH - IMAGE_WIDTH-10, 0, WIDTH - IMAGE_WIDTH-10, HEIGHT - 1)
+    display.line(WIDTH - IMAGE_WIDTH-10, HEIGHT - 1, WIDTH - 10, HEIGHT - 1)
+    display.line(WIDTH - 10, 0, WIDTH - 10, HEIGHT - 1)
 
     # Uncomment this if a white background is wanted behind the company
     # display.pen(15)
@@ -116,7 +131,7 @@ def draw_badge_1():
     display.thickness(2)
     name_length = display.measure_text(detail1_title, DETAILS_TEXT_SIZE)
     display.text(detail1_title, LEFT_PADDING, HEIGHT - ((DETAILS_HEIGHT * 3) // 2), DETAILS_TEXT_SIZE)
-    display.thickness(1)
+    display.thickness(2)
     display.text(detail1_text, 5 + name_length + DETAIL_SPACING, HEIGHT - ((DETAILS_HEIGHT * 3) // 2), DETAILS_TEXT_SIZE)
 
     # Draw the second detail's title and text
@@ -131,8 +146,10 @@ def draw_badge_2():
     display.pen(0)
     display.clear()
     
+    draw_badge_menu()
     # Draw badge image
     display.image(BADGE_IMAGE, IMAGE_WIDTH, HEIGHT, 0, 0)
+    display.line(WIDTH - 10, 0, WIDTH - 10, HEIGHT)
     
     # Draw a border around the image
     display.pen(0)
@@ -144,24 +161,14 @@ def draw_badge_2():
     
     # Extra border
     display.pen(15)
-    display.thickness(1)
-    #display.rectangle(start-x, start-y, width, height)
-    # display.rectangle(WIDTH - 10, 0, 10, HEIGHT) - Side bar
     
-    USEABLE_AREA_WIDTH = WIDTH - IMAGE_WIDTH - 11
     USEABLE_AREA_X = IMAGE_WIDTH
     USEABLE_AREA_Y = 1
-    USEABLE_AREA_WIDTH = (WIDTH - IMAGE_WIDTH) - 11
+    USEABLE_AREA_WIDTH = (WIDTH - IMAGE_WIDTH) - 10
     USEABLE_AREA_HEIGHT = HEIGHT - 2
     
     # display.rectangle(USEABLE_AREA_X, USEABLE_AREA_Y, USEABLE_AREA_WIDTH, USEABLE_AREA_HEIGHT) # Top
     
-    # Top Arrow (Side panel) - REDO
-    display.line(WIDTH - 10, 1, WIDTH - 10, HEIGHT-1)
-    display.line(WIDTH, 1, WIDTH, HEIGHT)
-    display.rectangle(WIDTH - 10, 0, 11, 27) # top arrow
-    display.rectangle(WIDTH - 10, 36, 10, 54) # top arrow
-    display.rectangle(WIDTH - 10, 99, 10, 40) # top arrow
     
     
     badge_title = 'DETAILS'
